@@ -7,8 +7,8 @@ import 'package:js/js_util.dart';
 
 class FlutterOktaSdkWeb {
   OktaAuth oktaAuth;
-  bool isInitialized = false;
 
+  /// Register Web plugin code in the plugin MethodChannel
   static void registerWith(Registrar registrar) {
     final MethodChannel channel = MethodChannel(
       'com.sonikro.flutter_okta_sdk',
@@ -19,56 +19,63 @@ class FlutterOktaSdkWeb {
     channel.setMethodCallHandler(pluginInstance.handleMethodCall);
   }
 
+  /// Handle web method calls from main plugin file
   Future<dynamic> handleMethodCall(MethodCall call) async {
     switch (call.method) {
-       case 'createConfig':
+      case 'createConfig':
         return createConfig(call.arguments);
         break;
       case 'signIn':
         return signIn();
         break;
+      case 'isAuthenticated':
+        return isAuthenticated();
+        break;
+      case 'signOut':
+        return signOut();
+        break;
       default:
         throw PlatformException(
           code: 'Unimplemented',
-          details: 'flutter_okta_sdk for web doesn\'t implement \'${call.method}\'',
+          details:
+              'flutter_okta_sdk for web doesn\'t implement \'${call.method}\'',
         );
     }
   }
 
   /// Initializes authorizer
   Future<void> createConfig(Map<dynamic, dynamic> arguments) async {
-    this.isInitialized = false;
-
     final authOptions = new OktaAuthOptions(
       clientId: arguments['clientId'],
       issuer: arguments['discoveryUrl'],
       redirectUri: arguments['redirectUrl'],
+      postLogoutRedirectUri: arguments['endSessionRedirectUri'],
+      scopes: arguments['scopes'],
     );
 
     oktaAuth = OktaAuth(authOptions);
-
-    this.isInitialized = true;
   }
 
   /// Handles sign in process including redirection to Okta
   Future<void> signIn() async {
-    if (this.isInitialized == false)
-      throw Exception("Cannot sign in before initializing Okta SDK");
-
-    if(oktaAuth.isLoginRedirect()) {
+    if (oktaAuth.isLoginRedirect()) {
       // promiseToFuture handles conversion of a JavaScript promise to a Dart Future
-      final TokenResponse data = await promiseToFuture(oktaAuth.token.parseFromUrl());
-      oktaAuth.tokenManager.add('idToken', data.tokens.idToken);
-      
-      return true;
+      promiseToFuture(oktaAuth.storeTokensFromRedirect());
     } else {
-      final IDToken token = await promiseToFuture(oktaAuth.tokenManager.get('idToken'));
-      
-      if(token != null) {
-        return true;
-      } else {
-        oktaAuth.token.getWithRedirect(new TokenParams(responseType: 'id_token'));
-      }
+      final isAuthenticated = await promiseToFuture(oktaAuth.isAuthenticated());
+      if (!isAuthenticated) promiseToFuture(oktaAuth.signInWithRedirect());
     }
+  }
+
+  /// Handles sign out process including redirection to Okta
+  Future<bool> signOut() async {
+    oktaAuth.signOut();
+
+    return true;
+  }
+
+  /// Returns if a user is authenticated of not
+  Future<bool> isAuthenticated() async {
+    return await promiseToFuture(oktaAuth.isAuthenticated());
   }
 }
