@@ -43,6 +43,9 @@ class FlutterOktaSdkWeb {
       case 'revokeRefreshToken':
         return revokeRefreshToken();
         break;
+      case 'clearTokens':
+        return clearTokens();
+        break;
       case 'signOut':
         return signOut();
         break;
@@ -117,8 +120,10 @@ class FlutterOktaSdkWeb {
     return true;
   }
 
-  // TODO: Implement clearTokens
-  Future<bool> clearTokens() async {}
+  Future<bool> clearTokens() async {
+    oktaAuth.tokenManager.clear();
+    return true;
+  }
 
   Future<bool> signOut() async {
     oktaAuth.signOut();

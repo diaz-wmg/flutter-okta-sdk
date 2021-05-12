@@ -44,9 +44,19 @@ abstract class TokenResponse {
   external Tokens get tokens;
 }
 
+@JS('TokenManager')
+abstract class TokenManager {
+  external factory TokenManager(OktaAuth sdk, OktaAuthOptions options);
+
+  external Future<IDToken> get(String key);
+  external void add(String key, IDToken token);
+  external void clear();
+}
+
 @JS('OktaAuth')
 abstract class OktaAuth {
   external String get userAgent;
+  external TokenManager get tokenManager;
 
   external factory OktaAuth(OktaAuthOptions options);
 
