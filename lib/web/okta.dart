@@ -53,6 +53,11 @@ abstract class OktaAuth {
   external bool isLoginRedirect();
   external Future<void> signInWithRedirect();
   external Future<void> storeTokensFromRedirect();
+  external Future<void> handleLoginRedirect();
   external Future<bool> isAuthenticated();
+  external String getAccessToken();
+  external String getIdToken();
+  external Future<dynamic> revokeAccessToken();
+  external Future<dynamic> revokeRefreshToken();
   external void signOut();
 }
