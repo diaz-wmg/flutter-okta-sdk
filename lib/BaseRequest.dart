@@ -20,6 +20,10 @@ class BaseRequest {
 
   String issuer;
 
+  List<String> androidSupportedBrowsers;
+
+  bool androidMathAllBrowsers;
+
   BaseRequest(
       {this.clientId,
       this.issuer,
@@ -28,7 +32,10 @@ class BaseRequest {
       this.redirectUrl,
       this.scopes,
       this.userAgentTemplate,
-      this.requireHardwareBackedKeyStore});
+      this.requireHardwareBackedKeyStore,
+        this.androidSupportedBrowsers = const ['com.android.chrome'],
+      this.androidMathAllBrowsers = false,
+      });
 }
 
 Map<String, Object> convertBaseRequestToMap(BaseRequest baseRequest) {
@@ -41,5 +48,7 @@ Map<String, Object> convertBaseRequestToMap(BaseRequest baseRequest) {
     'scopes': baseRequest.scopes,
     'userAgentTemplate': baseRequest.userAgentTemplate,
     'requireHardwareBackedKeyStore': baseRequest.requireHardwareBackedKeyStore,
+    'androidSupportedBrowsers': baseRequest.androidSupportedBrowsers,
+    'androidMathAllBrowsers': baseRequest.androidMathAllBrowsers,
   };
 }

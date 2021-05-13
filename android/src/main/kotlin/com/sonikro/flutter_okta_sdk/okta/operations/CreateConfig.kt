@@ -27,6 +27,8 @@ fun createConfig(arguments: Map<String, Any>, context: Context) {
                 .withStorage(SharedPreferenceStorage(context))
                 .withOktaHttpClient(HttpClientImpl(params.userAgentTemplate))
                 .setRequireHardwareBackedKeyStore(params.requireHardwareBackedKeyStore)
+                .supportedBrowsers(*params.androidSupportedBrowsers.toTypedArray())
+                .browserMatchAll(params.androidMathAllBrowsers)
                 .create()
 
         val authClient = Okta.AuthBuilder()
@@ -53,6 +55,8 @@ private fun processOktaRequestArguments(arguments: Map<String, Any>): OktaReques
             requireHardwareBackedKeyStore = (arguments["requireHardwareBackedKeyStore"] as Boolean?)
                     ?: false,
             scopes = arguments["scopes"] as ArrayList<String>,
-            userAgentTemplate = (arguments["userAgentTemplate"] as String?) ?: ""
+            userAgentTemplate = (arguments["userAgentTemplate"] as String?) ?: "",
+            androidSupportedBrowsers = arguments["androidSupportedBrowsers"] as ArrayList<String>,
+            androidMathAllBrowsers = (arguments["androidMathAllBrowsers"] as Boolean?) ?: false
     )
 }
