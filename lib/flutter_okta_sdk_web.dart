@@ -121,7 +121,6 @@ class FlutterOktaSdkWeb {
   Future<String> refreshTokens() async {
     await promiseToFuture(oktaAuth.tokenManager.renew('idToken'));
     await promiseToFuture(oktaAuth.tokenManager.renew('accessToken'));
-    await promiseToFuture(oktaAuth.tokenManager.renew('refreshToken'));
 
     return 'Token refreshed!';
   }
