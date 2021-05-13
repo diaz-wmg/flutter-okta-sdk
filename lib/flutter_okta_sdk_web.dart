@@ -37,6 +37,12 @@ class FlutterOktaSdkWeb {
       case 'getIdToken':
         return getIdToken();
         break;
+      case 'introspectIdToken':
+        return introspectIdToken();
+        break;
+      case 'refreshTokens':
+        return refreshTokens();
+        break;
       case 'revokeAccessToken':
         return revokeAccessToken();
         break;
@@ -95,33 +101,49 @@ class FlutterOktaSdkWeb {
     return oktaAuth.getIdToken();
   }
 
-  // TODO: Implement introspectAccessToken
+  // TODO: Not Supported by JavaScript library
   Future<String> introspectAccessToken() async {}
 
-  // TODO: Implement introspectIdToken
-  Future<String> introspectIdToken() async {}
+  Future<String> introspectIdToken() async {
+    final IDToken token =
+        await promiseToFuture(oktaAuth.tokenManager.get('idToken'));
+    final IDToken tokenResult =
+        await promiseToFuture(oktaAuth.token.verify(token));
 
-  // TODO: Implement introspectRefreshToken
+    if (tokenResult != null) return "token is valid";
+
+    return "token is invalid";
+  }
+
+  // TODO: Not Supported by JavaScript library
   Future<String> introspectRefreshToken() async {}
 
-  // TODO: Implement refreshTokens
-  Future<String> refreshTokens() async {}
+  Future<String> refreshTokens() async {
+    await promiseToFuture(oktaAuth.tokenManager.renew('idToken'));
+    await promiseToFuture(oktaAuth.tokenManager.renew('accessToken'));
+    await promiseToFuture(oktaAuth.tokenManager.renew('refreshToken'));
+
+    return 'Token refreshed!';
+  }
 
   Future<bool> revokeAccessToken() async {
     await promiseToFuture(oktaAuth.revokeAccessToken());
+
     return true;
   }
 
-  // TODO: Implement revokeIdToken
+  // TODO: Not Supported by JavaScript library
   Future<bool> revokeIdToken() async {}
 
   Future<bool> revokeRefreshToken() async {
     await promiseToFuture(oktaAuth.revokeRefreshToken());
+
     return true;
   }
 
   Future<bool> clearTokens() async {
     oktaAuth.tokenManager.clear();
+
     return true;
   }
 

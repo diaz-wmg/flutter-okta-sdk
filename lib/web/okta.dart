@@ -26,22 +26,19 @@ class OktaAuthOptions {
   });
 }
 
-// TODO: For possible deletion
+// TODO: Possible expand specification
 @JS('IDToken')
 abstract class IDToken {
   external String get clientId;
 }
 
-// TODO: For possible deletion
-@JS('Tokens')
-abstract class Tokens {
-  external IDToken get idToken;
-}
+// TODO: Possible expand specification
+@JS('Token')
+abstract class Token {}
 
-// TODO: For possible deletion
-@JS('TokenResponse')
-abstract class TokenResponse {
-  external Tokens get tokens;
+@JS('TokenAPI')
+abstract class TokenAPI {
+  external Future<IDToken> verify(IDToken verify);
 }
 
 @JS('TokenManager')
@@ -49,13 +46,13 @@ abstract class TokenManager {
   external factory TokenManager(OktaAuth sdk, OktaAuthOptions options);
 
   external Future<IDToken> get(String key);
-  external void add(String key, IDToken token);
+  external Future<Token> renew(String key);
   external void clear();
 }
 
 @JS('OktaAuth')
 abstract class OktaAuth {
-  external String get userAgent;
+  external TokenAPI get token;
   external TokenManager get tokenManager;
 
   external factory OktaAuth(OktaAuthOptions options);

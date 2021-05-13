@@ -63,24 +63,24 @@ This library is under construction. These are the next steps:
 ### web
 
   setup
-  signIn
+  ~~signIn~~
   customSignIn
-  singOut
+  ~~signOut~~
   getAuthClient
   authenticate
-  isAuthenticated
-  getAccessToken
-  getIdToken
+  ~~isAuthenticated~~
+  ~~getAccessToken~~
+  ~~getIdToken~~
   getUser
   getUserFromIdToken
-  revokeAccessToken
+  ~~revokeAccessToken~~
   revokeIdToken
-  revokeRefreshToken
-  clearTokens
+  ~~revokeRefreshToken~~
+  ~~clearTokens~~
   introspectAccessToken
-  introspectIdToken
+  ~~introspectIdToken~~
   introspectRefreshToken
-  refreshTokens
+  ~~refreshTokens~~
 
 ## Prerequisites
 
@@ -154,6 +154,10 @@ For Android, there is one steps that you must take:
 ### Setup iOS
 
 **TODO: (Need to do the iOS bridge)**
+
+### Setup Web
+
+Include Okta JavaScript SDK script tag from CDN or file in web/index.html at the end of the body tag, tag to include be found here: [Okta Javascript](https://developer.okta.com/code/javascript/okta_auth_sdk/#prerequisites)
 
 ## Usage
 
