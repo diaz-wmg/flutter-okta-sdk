@@ -78,18 +78,15 @@ class FlutterOktaSdkWeb {
   }
 
   Future<void> signIn() async {
-    if (oktaAuth.isLoginRedirect()) {
-      // promiseToFuture handles conversion of a JavaScript promise to a Dart Future
-      promiseToFuture(oktaAuth.storeTokensFromRedirect());
-      // Documentation says use this one
-      // promiseToFuture(oktaAuth.handleLoginRedirect());
-    } else {
-      final isAuthenticated = await promiseToFuture(oktaAuth.isAuthenticated());
-      if (!isAuthenticated) promiseToFuture(oktaAuth.signInWithRedirect());
-    }
+    await promiseToFuture(oktaAuth.signInWithRedirect());
   }
 
   Future<bool> isAuthenticated() async {
+    // Always get tokens from query params after auth validation
+    if (oktaAuth.isLoginRedirect()) {
+      await promiseToFuture(oktaAuth.storeTokensFromRedirect());
+    }
+
     return await promiseToFuture(oktaAuth.isAuthenticated());
   }
 
