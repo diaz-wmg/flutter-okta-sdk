@@ -14,7 +14,7 @@ class BaseRequest {
   /// The request scopes.
   List<String> scopes;
 
-  String userAgentTemplate;
+  String? userAgentTemplate;
 
   bool requireHardwareBackedKeyStore;
 
@@ -24,22 +24,22 @@ class BaseRequest {
 
   bool androidMathAllBrowsers;
 
-  BaseRequest(
-      {this.clientId,
-      this.issuer,
-      this.discoveryUrl,
-      this.endSessionRedirectUri,
-      this.redirectUrl,
-      this.scopes,
-      this.userAgentTemplate,
-      this.requireHardwareBackedKeyStore,
-        this.androidSupportedBrowsers = const ['com.android.chrome'],
-      this.androidMathAllBrowsers = false,
-      });
+  BaseRequest({
+    required this.clientId,
+    required this.issuer,
+    required this.discoveryUrl,
+    required this.endSessionRedirectUri,
+    required this.redirectUrl,
+    required this.scopes,
+    this.userAgentTemplate,
+    this.requireHardwareBackedKeyStore = false,
+    this.androidSupportedBrowsers = const ['com.android.chrome'],
+    this.androidMathAllBrowsers = false,
+  });
 }
 
-Map<String, Object> convertBaseRequestToMap(BaseRequest baseRequest) {
-  return <String, Object>{
+Map<String, Object?> convertBaseRequestToMap(BaseRequest baseRequest) {
+  return <String, Object?>{
     'clientId': baseRequest.clientId,
     'issuer': baseRequest.issuer,
     'discoveryUrl': baseRequest.discoveryUrl,
